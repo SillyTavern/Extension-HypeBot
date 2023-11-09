@@ -6,7 +6,14 @@ import { bufferToBase64, debounce } from "../../../utils.js";
 import { decodeTextTokens, getTextTokens, tokenizers } from "../../../tokenizers.js";
 
 const MODULE_NAME = 'third-party/Extension-HypeBot';
-const WAITING_VERBS = ['thinking', 'typing', 'brainstorming', 'cooking', 'conjuring'];
+const WAITING_VERBS = ['thinking', 'typing', 'brainstorming', 'cooking', 'conjuring', 'reflecting', 'meditating', 'contemplating'];
+const EMPTY_VERBS = [
+    'is counting the sheep',
+    'admires the stars',
+    'is waiting patiently',
+    'is looking for inspiration',
+    'is thinking about the meaning of life',
+];
 const MAX_PROMPT = 1024;
 const MAX_LENGTH = 50;
 const MAX_STRING_LENGTH = MAX_PROMPT * 4;
@@ -33,7 +40,7 @@ function getVerb(text) {
     let verbList = ['says', 'notes', 'states', 'whispers', 'murmurs', 'mumbles'];
 
     if (text.endsWith('!')) {
-        verbList = ['proclaims', 'declares', 'salutes', 'exclaims', 'cheers'];
+        verbList = ['proclaims', 'declares', 'salutes', 'exclaims', 'cheers', 'shouts'];
     }
 
     if (text.endsWith('?')) {
@@ -119,6 +126,7 @@ async function generateHypeBot() {
     prompt = collapseNewlines(prompt.replaceAll(/[\*\[\]\{\}]/g, ''));
 
     if (!prompt) {
+        setHypeBotText(`<span class="hypebot_name">${settings.name}</span> ${EMPTY_VERBS[Math.floor(Math.random() * EMPTY_VERBS.length)]}.`);
         return;
     }
 
