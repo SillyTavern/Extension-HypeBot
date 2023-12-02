@@ -1,9 +1,9 @@
-import { eventSource, event_types, getRequestHeaders, is_send_press, saveSettingsDebounced } from "../../../../script.js";
-import { extension_settings, getContext, renderExtensionTemplate } from "../../../extensions.js";
-import { SECRET_KEYS, secret_state } from "../../../secrets.js";
-import { collapseNewlines } from "../../../power-user.js";
-import { bufferToBase64, debounce } from "../../../utils.js";
-import { decodeTextTokens, getTextTokens, tokenizers } from "../../../tokenizers.js";
+import { eventSource, event_types, getRequestHeaders, is_send_press, saveSettingsDebounced } from '../../../../script.js';
+import { extension_settings, getContext, renderExtensionTemplate } from '../../../extensions.js';
+import { SECRET_KEYS, secret_state } from '../../../secrets.js';
+import { collapseNewlines } from '../../../power-user.js';
+import { bufferToBase64, debounce } from '../../../utils.js';
+import { decodeTextTokens, getTextTokens, tokenizers } from '../../../tokenizers.js';
 
 const MODULE_NAME = 'third-party/Extension-HypeBot';
 const WAITING_VERBS = ['thinking', 'typing', 'brainstorming', 'cooking', 'conjuring', 'reflecting', 'meditating', 'contemplating'];
@@ -87,7 +87,7 @@ function onChatEvent(clear) {
 
     abortController?.abort();
     generateDebounced();
-};
+}
 
 /**
  * Generates a HypeBot reply.
@@ -123,7 +123,7 @@ async function generateHypeBot() {
         }
     }
 
-    prompt = collapseNewlines(prompt.replaceAll(/[\*\[\]\{\}]/g, ''));
+    prompt = collapseNewlines(prompt.replaceAll(/[*[\]{}]/g, ''));
 
     if (!prompt) {
         setHypeBotText(`<span class="hypebot_name">${settings.name}</span> ${EMPTY_VERBS[Math.floor(Math.random() * EMPTY_VERBS.length)]}.`);
@@ -140,7 +140,7 @@ async function generateHypeBot() {
 
     const parameters = {
         input: base64String,
-        model: "hypebot",
+        model: 'hypebot',
         streaming: false,
         temperature: 1,
         max_length: MAX_LENGTH,
@@ -153,14 +153,14 @@ async function generateHypeBot() {
         repetition_penalty_slope: 0.18,
         repetition_penalty_frequency: 0,
         repetition_penalty_presence: 0,
-        phrase_rep_pen: "off",
+        phrase_rep_pen: 'off',
         bad_words_ids: [],
         stop_sequences: [[48585]],
         generate_until_sentence: true,
         use_cache: false,
         use_string: false,
         return_full_text: false,
-        prefix: "vanilla",
+        prefix: 'vanilla',
         logit_bias_exp: [],
         order: [0, 1, 2, 3],
     };
@@ -192,7 +192,7 @@ jQuery(() => {
 
     Object.assign(settings, extension_settings.hypebot);
     $('#extensions_settings2').append(renderExtensionTemplate(MODULE_NAME, 'settings'));
-    hypeBotBar = $(`<div id="hypeBotBar"></div>`).toggle(settings.enabled);
+    hypeBotBar = $('<div id="hypeBotBar"></div>').toggle(settings.enabled);
     $('#send_form').append(hypeBotBar);
 
     $('#hypebot_enabled').prop('checked', settings.enabled).on('input', () => {
