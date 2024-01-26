@@ -177,7 +177,8 @@ async function generateHypeBot() {
     if (response.ok) {
         const data = await response.json();
         const ids = Array.from(new Uint16Array(Uint8Array.from(atob(data.output), c => c.charCodeAt(0)).buffer));
-        const output = decodeTextTokens(tokenizers.GPT2, ids).replace(/�/g, '').trim();
+        const tokens = decodeTextTokens(tokenizers.GPT2, ids);
+        const output = (typeof tokens === 'string' ? tokens : tokens.text).replace(/�/g, '').trim();
 
         setHypeBotText(formatReply(output));
     } else {
