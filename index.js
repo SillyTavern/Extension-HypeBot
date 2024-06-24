@@ -1,5 +1,5 @@
 import { eventSource, event_types, getRequestHeaders, is_send_press, saveSettingsDebounced } from '../../../../script.js';
-import { extension_settings, getContext, renderExtensionTemplate } from '../../../extensions.js';
+import { extension_settings, getContext, renderExtensionTemplateAsync } from '../../../extensions.js';
 import { SECRET_KEYS, secret_state } from '../../../secrets.js';
 import { collapseNewlines } from '../../../power-user.js';
 import { bufferToBase64, debounce } from '../../../utils.js';
@@ -186,13 +186,14 @@ async function generateHypeBot() {
     }
 }
 
-jQuery(() => {
+jQuery(async () => {
     if (!extension_settings.hypebot) {
         extension_settings.hypebot = settings;
     }
 
     Object.assign(settings, extension_settings.hypebot);
-    $('#extensions_settings2').append(renderExtensionTemplate(MODULE_NAME, 'settings'));
+    const getContainer = () => $(document.getElementById('hypebot_container') ?? document.getElementById('extensions_settings2'));
+    getContainer().append(await renderExtensionTemplateAsync(MODULE_NAME, 'settings'));
     hypeBotBar = $('<div id="hypeBotBar"></div>').toggle(settings.enabled);
     $('#send_form').append(hypeBotBar);
 
